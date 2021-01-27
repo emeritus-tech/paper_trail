@@ -60,7 +60,8 @@ module PaperTrail
         model = if options[:dup] == true || version.event == "destroy"
                   klass.new
                 else
-                  find_cond = { klass.primary_key => version.item_id }
+                  id_key = klass.paper_trail_options[:id_key] || klass.primary_key
+                  find_cond = { id_key => version.item_id }
 
                   version.item || klass.unscoped.where(find_cond).first || klass.new
                 end

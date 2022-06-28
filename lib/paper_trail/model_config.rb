@@ -120,6 +120,10 @@ module PaperTrail
       @version_class ||= @model_class.version_class_name.constantize
     end
 
+    def self.model_name
+      ActiveModel::Name.new(self, nil, "temp")
+    end
+
     private
 
     # @api private

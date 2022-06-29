@@ -7,6 +7,9 @@ module PaperTrail
     describe "has_paper_trail" do
       it "raises when called multiple times" do
         klass = Class.new(ApplicationRecord) do
+          def self.name
+            "Anonymous"
+          end
           has_paper_trail
         end
 
@@ -19,6 +22,9 @@ module PaperTrail
         it "name can be passed instead of an options hash", :deprecated do
           allow(PaperTrail.deprecator).to receive(:warn)
           klass = Class.new(ApplicationRecord) do
+            def self.name
+              "Anonymous"
+            end
             has_paper_trail versions: :drafts
           end
           expect(klass.reflect_on_association(:drafts)).to be_a(
@@ -32,6 +38,9 @@ module PaperTrail
 
         it "name can be passed in the options hash" do
           klass = Class.new(ApplicationRecord) do
+            def self.name
+              "Anonymous"
+            end
             has_paper_trail versions: { name: :drafts }
           end
           expect(klass.reflect_on_association(:drafts)).to be_a(
@@ -41,6 +50,9 @@ module PaperTrail
 
         it "class_name can be passed in the options hash" do
           klass = Class.new(ApplicationRecord) do
+            def self.name
+              "Anonymous"
+            end
             has_paper_trail versions: { class_name: "NoObjectVersion" }
           end
           expect(klass.reflect_on_association(:versions).options[:class_name]).to eq(
@@ -50,6 +62,9 @@ module PaperTrail
 
         it "allows any option that has_many supports" do
           klass = Class.new(ApplicationRecord) do
+            def self.name
+              "Anonymous"
+            end
             has_paper_trail versions: { autosave: true, validate: true }
           end
           expect(klass.reflect_on_association(:versions).options[:autosave]).to eq true
@@ -58,6 +73,9 @@ module PaperTrail
 
         it "can even override options that PaperTrail adds to has_many" do
           klass = Class.new(ApplicationRecord) do
+            def self.name
+              "Anonymous"
+            end
             has_paper_trail versions: { as: :foo }
           end
           expect(klass.reflect_on_association(:versions).options[:as]).to eq :foo
@@ -66,6 +84,9 @@ module PaperTrail
         it "raises an error on unknown has_many options" do
           expect {
             Class.new(ApplicationRecord) do
+              def self.name
+                "Anonymous"
+              end
               has_paper_trail versions: { read_my_mind: true, validate: true }
             end
           }.to raise_error(
@@ -77,6 +98,9 @@ module PaperTrail
           it "raises an error" do
             expect {
               Class.new(ApplicationRecord) do
+                def self.name
+                  "Anonymous"
+                end
                 has_paper_trail versions: { class_name: "AbstractVersion" }
               end
             }.to raise_error(
@@ -90,6 +114,9 @@ module PaperTrail
         it "can be used instead of versions: {class_name: ...}", :deprecated do
           allow(PaperTrail.deprecator).to receive(:warn)
           klass = Class.new(ApplicationRecord) do
+            def self.name
+              "Anonymous"
+            end
             has_paper_trail class_name: "NoObjectVersion"
           end
           expect(klass.reflect_on_association(:versions).options[:class_name]).to eq(

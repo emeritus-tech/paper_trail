@@ -120,10 +120,6 @@ module PaperTrail
       @version_class ||= @model_class.version_class_name.constantize
     end
 
-    def self.model_name
-      ActiveModel::Name.new(self, nil, "temp")
-    end
-
     private
 
     # @api private
@@ -188,7 +184,7 @@ module PaperTrail
         @model_class.versions_association_name,
         scope,
         class_name: @model_class.version_class_name,
-        primary_key: options[:id_key],
+        primary_key: options[:id_key] || @model_class.primary_key,
         as: :item,
         **options[:versions].except(:name, :scope)
       )

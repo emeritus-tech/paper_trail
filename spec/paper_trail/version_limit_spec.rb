@@ -21,6 +21,20 @@ module PaperTrail
       # 4 versions = 3 updates + 1 create.
     end
 
+    it "cleans up old versions with limit specified in model with id_key" do
+      PaperTrail.config.version_limit = 10
+
+      # CustomIdKeyRecord overrides the global version_limit
+      custom = CustomIdKeyRecord.create(name: "Custom") # has_paper_trail limit: 3
+
+      15.times do |i|
+        custom.update(name: "Name #{i}")
+      end
+
+      expect(CustomIdKeyRecord.find(custom.id).versions.count).to eq(4)
+      # 4 versions = 3 updates + 1 create.
+    end
+
     it "cleans up old versions with limit specified on base class" do
       PaperTrail.config.version_limit = 10
 

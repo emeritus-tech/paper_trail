@@ -3,7 +3,9 @@
 require "securerandom"
 
 class CustomIdKeyRecord < ActiveRecord::Base
-  has_paper_trail id_key: :uuid, versions: { class_name: "CustomPrimaryKeyRecordVersion" }
+  has_paper_trail id_key: :uuid,
+    versions: { class_name: "CustomPrimaryKeyRecordVersion" },
+    limit: 3
 
   before_create do
     self.uuid ||= SecureRandom.uuid
